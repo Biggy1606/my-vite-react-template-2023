@@ -4,11 +4,13 @@ import { INotification } from "./NotificationType";
 interface INotificationStore {
 	notifications: INotification[] | [];
 	setNotifications: React.Dispatch<React.SetStateAction<[] | INotification[]>>;
+	duration?: number;
 }
 // Store for notifications
 export const NotificationContext = React.createContext<INotificationStore>({
 	notifications: [],
 	setNotifications: () => {},
+	duration: undefined,
 });
 
 // Just store for notifications, logic is in useNotification hook

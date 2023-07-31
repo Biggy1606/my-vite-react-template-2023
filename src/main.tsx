@@ -1,9 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { RouterProvider } from "react-router-dom";
+import { setupAxiosInterceptors } from "./api/AxiosService";
+import NotificationProvider from "./components/Notification/NotificationProvider";
 import "./main.css";
 import router from "./routes";
-import { RouterProvider } from "react-router-dom";
-import NotificationProvider from "./components/Notification/NotificationProvider";
+
+setupAxiosInterceptors();
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 	<React.StrictMode>

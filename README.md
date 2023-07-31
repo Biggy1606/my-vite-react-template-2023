@@ -1,7 +1,7 @@
 # Personal UI tool stack
 
-Toolstack for my UI projects.
-> It was challenging stuff to configure, but now it works like a charm... I hope.
+Toolstack for my UI projects. I try to use `bun`.
+> It was challenging stuff to configure, but now it works like a charm... I think.
 
 Used technologies:
 
@@ -30,21 +30,13 @@ Linting, formatting and code editor:
 ToDo:
 [ ] Add tests
 [?] Add CI/CD
-[?] Add SSR
+[?] Add SSR (Server Side Rendering)
 
 ## Usage
 
-- Setup `VITE_APP_NAME` in `.env.{mode}` files and run:
-
-```bash
-npm run dev
-```
-
-- To build for production, run:
-
-```bash
-npm run build
-```
+1. Setup `VITE_APP_NAME` in `.env.{mode}` files
+2. run: `bun run dev`
+3. To build for production, run: `bun run build`
 
 > Use <https://daisyui.com/components> for components styling and <https://www.radix-ui.com/docs/primitives/overview/introduction> for components
 

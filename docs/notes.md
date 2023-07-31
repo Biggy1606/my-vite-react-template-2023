@@ -36,4 +36,38 @@ export default ({ mode }) => {
 
 ### Summary
 
-I mostly don't understand what I'm doing
+I wrote own notification system but i think it's not good enough. I'll try to use `notistack` instead.
+Below example from my old project where i used `notistack`:
+
+```typescript
+import { useSnackbar, VariantType, WithSnackbarProps } from 'notistack';
+import React from 'react';
+
+let useSnackbarRef: WithSnackbarProps;
+export const SnackbarExtension: React.FC = () => {
+  useSnackbarRef = useSnackbar();
+  return null;
+};
+
+const snack = {
+  success(msg: string) {
+    this.toast(msg, 'success');
+  },
+  warning(msg: string) {
+    this.toast(msg, 'warning');
+  },
+  info(msg: string) {
+    this.toast(msg, 'info');
+  },
+  error(msg: string) {
+    this.toast(msg, 'error');
+  },
+  toast(msg: string, variant: VariantType = 'default') {
+    useSnackbarRef.enqueueSnackbar(msg, { variant });
+  },
+};
+
+export default snack;
+```
+
+>I mostly don't understand what I'm doing

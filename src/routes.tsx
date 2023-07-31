@@ -3,6 +3,7 @@ import App from "./features/App/App";
 import HomePage from "./features/Home/HomePage";
 import AboutPage from "./features/About/AboutPage";
 import Redirect from "./utils/Redirect.tsx";
+import LoginPage from "./features/Login/LoginPage.tsx";
 
 const loader = () => <span className="loading loading-ring loading-lg"></span>;
 
@@ -15,10 +16,17 @@ export const routes: RouteObject[] = [
 			{
 				path: "/",
 				element: <HomePage />,
+				id: "Home",
+			},
+			{
+				path: "/login",
+				element: <LoginPage />,
+				id: "Login",
 			},
 			{
 				path: "/about",
 				element: <AboutPage />,
+				id: "About",
 			},
 		],
 	},
