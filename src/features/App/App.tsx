@@ -2,12 +2,16 @@ import { HamburgerMenuIcon } from "@radix-ui/react-icons";
 import { useEffect, useState } from "react";
 import { Link, Outlet } from "react-router-dom";
 import { themes } from "../../../daisyui.config.js";
-import NotificationStack from "../../components/Notification/NotificationStack.js";
-import { useNotification } from "../../components/Notification/useNotification.js";
+import { routes } from "../../routes.tsx";
+import { navigation } from "../../configure.tsx";
+/** Here is located global wrapper for entire application, here you canfind:
+ * - Drawer - contains navigation buttons
+ * - Navbar - contains hamburger menu and theme selector
+ * - Outlet - contains active page content
+ */
 function App() {
 	const [theme, setTheme] = useState<string>("dark");
 	const [openDrawer, setOpenDrawer] = useState<boolean>(false);
-	const { addNotification } = useNotification();
 
 	useEffect(() => {
 		document.querySelector("html")?.setAttribute("data-theme", theme);
@@ -27,7 +31,7 @@ function App() {
 	};
 	const handleThemeChange = (theme: string) => {
 		setTheme(theme);
-		addNotification("Theme changed to " + theme, "info", 10);
+		console.log("Theme changed to " + theme, "info", 10);
 	};
 
 	return (
@@ -84,35 +88,22 @@ function App() {
 					<label htmlFor="my-drawer" className="drawer-overlay"></label>
 					<ul className="menu p-4 w-80 h-full bg-base-200 text-base-content">
 						{/* Drawer sidebar content here */}
-						<li>
-							<Link to="/" onClick={handleDrawerStatusForNavigationButton}>
-								Home
-							</Link>
-						</li>
-						<li>
-							<Link to="/login" onClick={handleDrawerStatusForNavigationButton}>
-								Login
-							</Link>
-						</li>
-						<li>
-							<Link to="/products" onClick={handleDrawerStatusForNavigationButton}>
-								Products
-							</Link>
-						</li>
-						<li>
-							<Link to="/transactions" onClick={handleDrawerStatusForNavigationButton}>
-								Transactions
-							</Link>
-						</li>
-						<li>
-							<Link to="/about" onClick={handleDrawerStatusForNavigationButton}>
-								About
-							</Link>
-						</li>
+						{/*Automatically generated navigation buttons based on routing table from configuration file*/}
+						{navigation
+							.filter((route) => route.showInNavbar)
+							.map((route) => (
+								<li key={route.name}>
+									<Link
+										to={route.path || "/"}
+										onClick={handleDrawerStatusForNavigationButton}
+									>
+										{route.name}
+									</Link>
+								</li>
+							))}
 					</ul>
 				</div>
 			</div>
-			<NotificationStack />
 		</div>
 	);
 }

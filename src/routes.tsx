@@ -1,34 +1,25 @@
 import { createBrowserRouter, RouteObject } from "react-router-dom";
 import App from "./features/App/App";
-import HomePage from "./features/Home/HomePage";
-import AboutPage from "./features/About/AboutPage";
 import Redirect from "./utils/Redirect.tsx";
-import LoginPage from "./features/Login/LoginPage.tsx";
+import { navigation } from "./configure.tsx";
 
 const loader = () => <span className="loading loading-ring loading-lg"></span>;
 
+// It generates navigation buttons for the navbar
 export const routes: RouteObject[] = [
 	{
 		path: "/",
 		element: <App />,
 		loader: loader,
-		children: [
-			{
-				path: "/",
-				element: <HomePage />,
-				id: "Home",
-			},
-			{
-				path: "/login",
-				element: <LoginPage />,
-				id: "Login",
-			},
-			{
-				path: "/about",
-				element: <AboutPage />,
-				id: "About",
-			},
-		],
+		children: navigation
+			.filter((route) => !route.disableRedirect)
+			.map(
+				(route): RouteObject => ({
+					path: route.path,
+					element: route.component,
+					id: route.name,
+				}),
+			),
 	},
 	/* Every unmached route are redirected to '/' */
 	{

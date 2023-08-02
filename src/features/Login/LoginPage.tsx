@@ -3,7 +3,6 @@ import { useState } from "react";
 import { SubmitErrorHandler, SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod";
-import { toast } from "../../components/Notification/NotificationStack";
 
 type Input = {
 	username: string;
@@ -31,15 +30,15 @@ function LoginPage() {
 	const navigate = useNavigate();
 	const onSubmit: SubmitHandler<Input> = (data) => {
 		if (data.username === "admin" && data.password === "A0m!n") {
-			toast.success("Login successful!", 3);
+			console.log("Login successful!", 3);
 			navigate("/products");
 		} else {
-			toast.error("Wrong username or password");
+			console.log("Wrong username or password");
 		}
 		setIsSubmitting(false);
 	};
 	const onError: SubmitErrorHandler<Input> = () => {
-		toast.error("Errors in form fields");
+		console.log("Errors in form fields");
 	};
 
 	return (
