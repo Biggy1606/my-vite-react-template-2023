@@ -4,6 +4,7 @@ import { RouterProvider } from "react-router-dom";
 import { setupAxiosInterceptors } from "./api/AxiosService";
 import "./main.css";
 import router from "./routes";
+import App from "./features/App/App";
 
 setupAxiosInterceptors();
 

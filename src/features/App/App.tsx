@@ -1,16 +1,17 @@
-import { HamburgerMenuIcon } from "@radix-ui/react-icons";
+import { HamburgerMenuIcon, SunIcon } from "@radix-ui/react-icons";
 import { useEffect, useState } from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import { themes } from "../../../daisyui.config.js";
-import { routes } from "../../routes.tsx";
-import { navigation } from "../../configure.tsx";
+import { main, navigation } from "../../configure.tsx";
+import NavigationTree from "../../components/NavigationTree.tsx";
 /** Here is located global wrapper for entire application, here you canfind:
  * - Drawer - contains navigation buttons
  * - Navbar - contains hamburger menu and theme selector
  * - Outlet - contains active page content
+ * - App theme controll
  */
 function App() {
-	const [theme, setTheme] = useState<string>("dark");
+	const [theme, setTheme] = useState<string>("adient");
 	const [openDrawer, setOpenDrawer] = useState<boolean>(false);
 
 	useEffect(() => {
@@ -42,6 +43,7 @@ function App() {
 				<input
 					id="my-drawer"
 					type="checkbox"
+					placeholder="drawer-checkbox"
 					className="drawer-toggle"
 					checked={openDrawer}
 					onChange={handleDrawerStatus}
@@ -56,15 +58,18 @@ function App() {
 								htmlFor="my-drawer"
 								className="btn btn-circle btn-neutral drawer-button"
 							>
-								<HamburgerMenuIcon />
+								<HamburgerMenuIcon className="w-6 h-6" />
 							</label>
+							<Link to="/" className="text-lg font-bold ml-8">
+								{main.program_name}
+							</Link>
 						</div>
 						{/* Right side navbar */}
 						<div className="flex-none gap-2">
 							<div className="dropdown dropdown-bottom dropdown-end">
-								<label tabIndex={0} className="btn m-1">
-									Theme
-								</label>
+								<button tabIndex={0} className="btn btn-circle m-1">
+									<SunIcon className="w-6 h-6" />
+								</button>
 								<ul
 									tabIndex={0}
 									className="menu dropdown-content z-[1] p-2 shadow bg-base-100 rounded-box w-fit mt-4 max-h-24 sm:max-h-96  flex flex-col items-center flex-nowrap overflow-y-auto"
@@ -78,29 +83,24 @@ function App() {
 									))}
 								</ul>
 							</div>
+							<button className="btn m-1">Log out</button>
 						</div>
 					</div>
 					{/* App/active_drawer content */}
+					<div className="max-w text-sm breadcrumbs pl-6 shadow">
+						<ul>
+							{/*Automatically generated breadcrumbs based on routing table from configuration file and active path*/}
+							{/*Get active route and find it in routing file*/}
+							TODO: make breadcrumbs
+						</ul>
+					</div>
 					<Outlet />
 				</div>
 				{/* Drawer sidebar wrapper */}
 				<div className="drawer-side">
 					<label htmlFor="my-drawer" className="drawer-overlay"></label>
-					<ul className="menu p-4 w-80 h-full bg-base-200 text-base-content">
-						{/* Drawer sidebar content here */}
-						{/*Automatically generated navigation buttons based on routing table from configuration file*/}
-						{navigation
-							.filter((route) => route.showInNavbar)
-							.map((route) => (
-								<li key={route.name}>
-									<Link
-										to={route.path || "/"}
-										onClick={handleDrawerStatusForNavigationButton}
-									>
-										{route.name}
-									</Link>
-								</li>
-							))}
+					<ul className="menu bg-base-200 w-56 h-full">
+						<NavigationTree routes={navigation} />
 					</ul>
 				</div>
 			</div>

@@ -1,33 +1,62 @@
+/**
+ * This file is used to configure react-router-dom.
+ * Do not change anything here, unless you know what you are doing.
+ * Every path and route is configured in `configure.tsx` file.
+ */
+
 import { createBrowserRouter, RouteObject } from "react-router-dom";
-import App from "./features/App/App";
 import Redirect from "./utils/Redirect.tsx";
-import { navigation } from "./configure.tsx";
+import { CustomRouteObject, navigation } from "./configure.tsx";
 
-const loader = () => <span className="loading loading-ring loading-lg"></span>;
+/**
+ * This function is used to convert `CustomRouteObject` to `RouteObject` and process all additionalProps
+ */
+const createRoutingFromCustomRouteObject = (
+	routes: CustomRouteObject[],
+): RouteObject[] => {
+	const result: RouteObject[] = []; //Final routes that will be used for navigation
+	routes.forEach((route) => {
+		// Extract everything except additionalProps and children
+		const { additionalProps, children, ...routeNative } = route;
+		//Filter routes that are disabled for navigation
+		//! WARNING: It will cut off all children routes as well
+		if (additionalProps.disableRedirect) {
+			return;
+		}
+		//Add route to navigationRoutes, array that will be returned
+		if (children === undefined || children.length === 0) {
+			result.push({
+				...routeNative,
+			});
+		} else {
+			result.push({
+				path: route.path,
+				element: route.element,
+				children: createRoutingFromCustomRouteObject(children),
+			});
+		}
+	});
+	//In case of empty routes, add a default route with message
+	if (result.length === 0) {
+		result.push({
+			path: "/",
+			element: <div>Empty routes</div>,
+		});
+	}
+	//Always add redirect unmached route to root at the end
+	return result;
+};
 
-// It generates navigation buttons for the navbar
+// It is main variable that handle all navigation rules and paths
 export const routes: RouteObject[] = [
-	{
-		path: "/",
-		element: <App />,
-		loader: loader,
-		children: navigation
-			.filter((route) => !route.disableRedirect)
-			.map(
-				(route): RouteObject => ({
-					path: route.path,
-					element: route.component,
-					id: route.name,
-				}),
-			),
-	},
-	/* Every unmached route are redirected to '/' */
+	...createRoutingFromCustomRouteObject(navigation),
 	{
 		path: "*",
 		element: <Redirect to="/" />,
 	},
 ];
 
+// It is variable that have routes for react-router-dom, final form
 export const router = createBrowserRouter(routes, {
 	basename: "/",
 	future: {
